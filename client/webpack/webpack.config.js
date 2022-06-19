@@ -1,7 +1,15 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
-  entry: path.resolve(__dirname, '../src/main.js'),
+  entry: path.resolve(__dirname, '../src/main.tsx'),
+  module: {
+    rules: [
+      {
+        test: /.(ts|js|tsx|ts)$/,
+        use: 'babel-loader',
+      },
+    ],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'qship',

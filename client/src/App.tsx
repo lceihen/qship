@@ -2,7 +2,21 @@ import React from 'react'
 import './App.scss'
 import './App1.css'
 import Test from './views/test/index.tsx'
+import imgsrc from './images/small.jpg'
 const App = () => {
-  return <div>12</div>
+  // console.log('imgurl', imgsrc)
+  // const img = document.createElement('img')
+  // img.src = imgsrc
+  // document.body.appendChild(img)
+  return (
+    <div>
+      <h1>12</h1>
+      <img
+        src={imgsrc}
+        alt=''
+        style={{ width: '35px', height: '35px', display: 'block' }}
+      />
+    </div>
+  )
 }
 export default App

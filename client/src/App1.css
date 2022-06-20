@@ -3,8 +3,5 @@ body{
 }
 div{
   display: flex;
-  transform: translate(30px,30px);
-  width: 35px;
-  height: 35px;
-   background-image: url('../images/small.jpg');
+   background-image: url('./images/icon.jpg');
 }

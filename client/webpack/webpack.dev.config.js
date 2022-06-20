@@ -4,6 +4,7 @@ const { merge } = require('webpack-merge')
 const getStyleLoaders = (preProcessor) => {
   return ['style-loader', 'css-loader', preProcessor].filter(Boolean)
 }
+
 module.exports = merge(webpackBaseOption, {
   mode: 'development',
   devServer: {
@@ -25,10 +26,6 @@ module.exports = merge(webpackBaseOption, {
       {
         test: /\.(scss|sass)$/i,
         use: getStyleLoaders('sass-loader'),
-      },
-      {
-        test: /\.(png|jpg|jpeg)$/,
-        type: 'asset',
       },
     ],
   },

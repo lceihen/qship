@@ -2,6 +2,12 @@ const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpackBaseOption = require('./webpack.config')
 const { merge } = require('webpack-merge')
+
+// parser: {
+//         dataUrlCondition: {
+//           maxSize: 10 * 1024,
+//         },
+//       },
 const getStyleLoaders = (preProcessor) => {
   return [
     MiniCssExtractPlugin.loader,
@@ -44,18 +50,6 @@ module.exports = merge(webpackBaseOption, {
       {
         test: /\.(scss|sass)$/i,
         use: getStyleLoaders('sass-loader'),
-      },
-      {
-        test: /\.(png|jpg|jpeg|gif|webp)$/,
-        type: 'asset',
-        parser: {
-          dataUrlCondition: {
-            maxSize: 10 * 1024,
-          },
-        },
-        generator: {
-          filename: 'static/images/[name].[hash][ext]',
-        },
       },
     ],
   },

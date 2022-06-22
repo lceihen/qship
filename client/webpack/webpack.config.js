@@ -10,7 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
   entry: path.resolve(__dirname, '../src/main.tsx'),
   output: {
-    filename: 'js/bundle.[chunkhash].js',
+    filename: 'static/js/bundle.[chunkhash].js',
     path: path.resolve(__dirname, '../dist'),
     publicPath: '',
     assetModuleFilename: 'static/images/[name][ext]',

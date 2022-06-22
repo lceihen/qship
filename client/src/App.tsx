@@ -16,6 +16,7 @@ const App = () => {
         alt=''
         style={{ width: '35px', height: '35px', display: 'block' }}
       />
+      <i className='iconfont icon-yanjing_yincang'></i>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const webpackBaseOption = require('./webpack.config')
 const { merge } = require('webpack-merge')
 
@@ -10,7 +11,12 @@ const { merge } = require('webpack-merge')
 //       },
 const getStyleLoaders = (preProcessor) => {
   return [
-    MiniCssExtractPlugin.loader,
+    {
+      loader: MiniCssExtractPlugin.loader,
+      options: {
+        publicPath: '../../',
+      },
+    },
     'css-loader',
     {
       loader: 'postcss-loader',
@@ -37,10 +43,13 @@ const getStyleLoaders = (preProcessor) => {
 }
 module.exports = merge(webpackBaseOption, {
   mode: 'production',
+  devtool: 'source-map',
+  output: {},
   module: {
     rules: [
       {
-        test: /\.(ts|js|tsx|ts)$/,
+        test: /\.(ts|js|tsx|jsx)$/,
+        exclude: /node_modules/,
         use: 'babel-loader',
       },
       {
@@ -57,5 +66,6 @@ module.exports = merge(webpackBaseOption, {
     new MiniCssExtractPlugin({
       filename: 'static/css/[name].[hash:8].css',
     }),
+    new CssMinimizerPlugin(),
   ],
 })

@@ -3,5 +3,9 @@ body{
 }
 div{
   display: flex;
-   background-image: url('./images/icon.jpg');
+  width: 580px;
+  height: 580px;
+  background-image: url('./images/icon.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }

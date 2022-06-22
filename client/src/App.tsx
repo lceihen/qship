@@ -2,7 +2,7 @@ import React from 'react'
 import './App.scss'
 import './App1.css'
 import Test from './views/test/index.tsx'
-import imgsrc from './images/small.jpg'
+import imgsrc from './images/app.jpg'
 const App = () => {
   // console.log('imgurl', imgsrc)
   // const img = document.createElement('img')
@@ -10,7 +10,7 @@ const App = () => {
   // document.body.appendChild(img)
   return (
     <div>
-      <h1>12</h1>
+      <h1>125</h1>
       <img
         src={imgsrc}
         alt=''

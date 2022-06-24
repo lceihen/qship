@@ -1,71 +1,93 @@
 const path = require('path')
+const os = require('os')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const webpackBaseOption = require('./webpack.config')
 const { merge } = require('webpack-merge')
-
-// parser: {
-//         dataUrlCondition: {
-//           maxSize: 10 * 1024,
-//         },
-//       },
-const getStyleLoaders = (preProcessor) => {
-  return [
-    {
-      loader: MiniCssExtractPlugin.loader,
-      options: {
-        publicPath: '../../',
-      },
-    },
-    'css-loader',
-    {
-      loader: 'postcss-loader',
-      options: {
-        postcssOptions: {
-          plugins: [
-            [
-              'postcss-preset-env',
-              {
-                autoprefixer: {
-                  flexbox: 'no-2009',
-                },
-                stage: 3,
-              },
-            ],
-          ],
+const TerserPlugin = require('terser-webpack-plugin')
+//const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+const threads = os.cpus().length
+const getStyleLoaders = preProcessor => {
+    return [
+        {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+                publicPath: '../../',
+            },
         },
-      },
-    },
+        'css-loader',
+        {
+            loader: 'postcss-loader',
+            options: {
+                postcssOptions: {
+                    plugins: [
+                        [
+                            'postcss-preset-env',
+                            {
+                                autoprefixer: {
+                                    flexbox: 'no-2009',
+                                },
+                                stage: 3,
+                            },
+                        ],
+                    ],
+                },
+            },
+        },
 
-    ,
-    preProcessor,
-  ].filter(Boolean)
+        ,
+        preProcessor,
+    ].filter(Boolean)
 }
 module.exports = merge(webpackBaseOption, {
-  mode: 'production',
-  devtool: 'source-map',
-  output: {},
-  module: {
-    rules: [
-      {
-        test: /\.(ts|js|tsx|jsx)$/,
-        exclude: /node_modules/,
-        use: 'babel-loader',
-      },
-      {
-        test: /\.css$/,
-        use: getStyleLoaders(''),
-      },
-      {
-        test: /\.(scss|sass)$/i,
-        use: getStyleLoaders('sass-loader'),
-      },
+    mode: 'production',
+    devtool: 'source-map',
+    output: {},
+    module: {
+        rules: [
+            {
+                test: /\.(ts|js|tsx|jsx)$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'thread-loader',
+                        options: {
+                            workers: threads,
+                        },
+                    },
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            cacheDirectory: true,
+                            cacheCompression: false,
+                            plugins: ['@babel/plugin-transform-runtime'],
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.css$/,
+                use: getStyleLoaders(''),
+            },
+            {
+                test: /\.(scss|sass)$/i,
+                use: getStyleLoaders('sass-loader'),
+            },
+        ],
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: 'static/css/[name].[hash:8].css',
+        }),
+        new CssMinimizerPlugin(),
     ],
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'static/css/[name].[hash:8].css',
-    }),
-    new CssMinimizerPlugin(),
-  ],
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new CssMinimizerPlugin(),
+            new TerserPlugin({
+                parallel: threads,
+            }),
+        ],
+    },
 })
